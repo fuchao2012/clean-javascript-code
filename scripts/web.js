@@ -1,15 +1,11 @@
-/*
-  This is the web builder script that generates the web files.
-  Run using `npm run webber`.
-*/
-// Load modules
-const fs = require('fs-extra'),
-  path = require('path'),
-  chalk = require('chalk'),
-  md = require('markdown-it')(),
-  minify = require('html-minifier').minify;
+const fs = require('fs-extra');
+const path = require('path');
+const chalk = require('chalk');
+const md = require('markdown-it')();
+const minify = require('html-minifier').minify;
 const util = require('./util');
 var Prism = require('prismjs');
+
 const minifyHTML = str =>
   minify(str, {
     collapseBooleanAttributes: true,
@@ -61,7 +57,7 @@ ${
     .replace(/<\/h3>/g, '</h4>')
     .replace(
       /<pre><code class="language-js">/m,
-      '</div><div class="copy-button-container"><button class="copy-button" aria-label="Copy to clipboard"></button></div><pre><code class="language-js">'
+      '</div><pre><code class="language-js">'
     )
     .replace(
       /<pre><code class="language-js">([^\0]*?)<\/code><\/pre>/gm,
@@ -74,7 +70,7 @@ ${
     .replace(/<\/div>\s*<pre class="/g, '</div><pre class="section card-code ')
     .replace(
       /<\/pre>\s+<pre class="/g,
-      '</pre><label class="collapse">examples</label><pre class="section card-examples '
+      '</pre><pre class="section card-examples '
     )}
   </div>`;
 const filterSnippets = (snippetList, excludedFiles) =>
@@ -266,124 +262,6 @@ const generateMenuForStaticPage = staticPart => {
   }
   return staticPart.replace('$nav-menu-data', htmlCode);
 };
-
-const staticPageStartGenerator = (staticPart, heading, description) => {
-  let taggedData = util.prepTaggedData(tagDbData);
-  // Add the start static part
-  let htmlCode = `${staticPart}\n`;
-
-  // Loop over tags and snippets to create the table of contents
-  for (let tag of taggedData) {
-    htmlCode +=
-      '<h4 class="collapse">' +
-      md
-        .render(`${util.capitalize(tag, true)}\n`)
-        .replace(/<p>/g, '')
-        .replace(/<\/p>/g, '') +
-      '</h4><ul>';
-    for (let taggedSnippet of Object.entries(tagDbData).filter(v => v[1][0] === tag)) {
-      htmlCode += md
-        .render(
-          `[${taggedSnippet[0]}](./${
-            tag === 'array' ? 'index' : tag
-          }#${taggedSnippet[0].toLowerCase()})\n`
-        )
-        .replace(/<p>/g, '')
-        .replace(/<\/p>/g, '</li>')
-        .replace(/<a/g, `<li><a tags="${taggedSnippet[1].join(',')}"`);
-    }
-    htmlCode += '</ul>\n';
-  }
-  htmlCode += `<h4 class="static-link"><a href="./archive">Archive</a></h4>
-  <h4 class="static-link"><a href="./glossary">Glossary</a></h4>
-  <h4 class="static-link"><a href="./contributing">Contributing</a></h4>
-  <h4 class="static-link"><a href="./about">About</a></h4>
-  <div><button class="social fb"></button><button class="social instagram"></button><button class="social twitter"></button></div>
-  </nav><main class="col-centered"><span id="top"><br/><br/></span><h2 class="category-name">${heading}</h2>
-        <p style="text-align: justify">${description}</p><br />`;
-  return htmlCode.replace(/\$page_name/g, util.capitalize(heading));
-};
-
-
-// Create the output for the archive.html file
-try {
-  // Add the static part
-  let heading = 'Snippets Archive';
-  let description = "These snippets, while useful and interesting, didn't quite make it into the repository due to either having very specific use-cases or being outdated. However we felt like they might still be useful to some readers, so here they are.";
-  let htmlCode = staticPageStartGenerator(staticPageStartPart, heading, description);
-
-  archivedOutput += htmlCode;
-
-  // Filter README.md from folder
-  const filteredArchivedSnippets = filterSnippets(archivedSnippets, ['README.md']);
-
-  // Generate archived snippets from md files
-  for (let snippet of Object.entries(filteredArchivedSnippets))
-    archivedOutput += generateSnippetCard(filteredArchivedSnippets, snippet, false);
-
-  // Optimize punctuation nodes
-  archivedOutput = util.optimizeNodes(
-    archivedOutput,
-    /<span class="token punctuation">([^\0<]*?)<\/span>([\n\r\s]*)<span class="token punctuation">([^\0]*?)<\/span>/gm,
-    (match, p1, p2, p3) => `<span class="token punctuation">${p1}${p2}${p3}</span>`
-  );
-  // Optimize operator nodes
-  archivedOutput = util.optimizeNodes(
-    archivedOutput,
-    /<span class="token operator">([^\0<]*?)<\/span>([\n\r\s]*)<span class="token operator">([^\0]*?)<\/span>/gm,
-    (match, p1, p2, p3) => `<span class="token operator">${p1}${p2}${p3}</span>`
-  );
-  // Optimize keyword nodes
-  archivedOutput = util.optimizeNodes(
-    archivedOutput,
-    /<span class="token keyword">([^\0<]*?)<\/span>([\n\r\s]*)<span class="token keyword">([^\0]*?)<\/span>/gm,
-    (match, p1, p2, p3) => `<span class="token keyword">${p1}${p2}${p3}</span>`
-  );
-
-  archivedOutput += `${staticPageEndPart}`;
-
-  // Generate and minify 'archive.html' file
-  const minifiedArchivedOutput = minifyHTML(archivedOutput);
-
-  fs.writeFileSync(path.join(docsPath, 'archive.html'), minifiedArchivedOutput);
-  console.log(`${chalk.green('SUCCESS!')} archive.html file generated!`);
-} catch (err) {
-  console.log(`${chalk.red('ERROR!')} During archive.html generation: ${err}`);
-  process.exit(1);
-}
-
-// Create the output for the glossary.html file
-try {
-  // Add the static part
-  let heading = 'Glossary';
-  let description = 'Developers use a lot of terminology daily. Every once in a while, you might find a term you do not know. We know how frustrating that can get, so we provide you with a handy glossary of frequently used web development terms.';
-  let htmlCode = staticPageStartGenerator(staticPageStartPart, heading, description);
-  glossaryOutput += htmlCode;
-
-  // Filter README.md from folder
-  const filteredGlossarySnippets = filterSnippets(glossarySnippets, ['README.md']);
-
-  // Generate glossary snippets from md files
-  for (let snippet of Object.entries(filteredGlossarySnippets)) {
-    glossaryOutput +=
-      '<div class="card code-card"><div class="section card-content">' +
-      md
-        .render(`\n${filteredGlossarySnippets[snippet[0]]}`)
-        .replace(/<h3/g, `<h4 id="${snippet[0].toLowerCase()}"`)
-        .replace(/<\/h3>/g, '</h4>') +
-      '</div></div>';
-  }
-
-  glossaryOutput += `${staticPageEndPart}`;
-
-  // Generate and minify 'glossary.html' file
-  const minifiedGlossaryOutput = minifyHTML(glossaryOutput);
-  fs.writeFileSync(path.join(docsPath, 'glossary.html'), minifiedGlossaryOutput);
-  console.log(`${chalk.green('SUCCESS!')} glossary.html file generated!`);
-} catch (err) {
-  console.log(`${chalk.red('ERROR!')} During glossary.html generation: ${err}`);
-  process.exit(1);
-}
 
 // Copy static files
 staticFiles.forEach(f => {

@@ -465,7 +465,7 @@ $grid-large-breakpoint: 1280px;
     grid-column: 2/12;
   }
   @media screen and (min-width: #{$grid-large-breakpoint}) {
-    grid-column: 3/11;
+    grid-column: 2/12;
   }
 }
 // 25% width - For the 'in numbers' section
@@ -564,15 +564,15 @@ h2.category-name {
         margin-bottom: 0;
         border-radius: 0 0 calc(4 * var(#{$universal-border-radius-var})) calc(4 * var(#{$universal-border-radius-var}));
         padding-top: 0;
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0.5625rem;
-          border-left: $__1px solid var(#{$collapse-color-var});
-          height: calc(100% - 18px);
-        }
+        // &:before {
+        //   content: '';
+        //   display: block;
+        //   position: absolute;
+        //   top: 0;
+        //   left: 0.5625rem;
+        //   border-left: $__1px solid var(#{$collapse-color-var});
+        //   height: calc(100% - 18px);
+        // }
       }
     }
     .copy-button-container {

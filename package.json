@@ -18,9 +18,9 @@
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-babel-minify": "^4.0.0"
   },
-  "name": "30-seconds-of-code",
-  "description": "A collection of useful JavaScript snippets.",
-  "version": "1.2.3",
+  "name": "clean-javascript-code",
+  "description": "A collection of Clean JavaScript Code Rule.",
+  "version": "0.1.0",
   "main": "dist/_30s.js",
   "module": "dist/_30s.esm.js",
   "sideEffects": false,
@@ -28,9 +28,10 @@
     "glossary:librarian": "node ./scripts/glossary/library.js",
     "glossary:keymaker": "node ./scripts/glossary/keyword.js",
     "builder": "node ./scripts/build.js",
+    "reverse": "node ./scripts/reverse.js",
     "linter": "node ./scripts/lint.js",
     "tagger": "node ./scripts/tag.js",
-    "webber": "node ./scripts/web.js",
+    "webber": "node ./scripts/web.js && serve .",
     "tester": "node ./scripts/tdd.js",
     "extractor": "node ./scripts/extract.js",
     "vscoder": "node ./scripts/vscodegen.js",
@@ -41,18 +42,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/30-seconds/30-seconds-of-code.git"
+    "url": "git+https://github.com/fuchao2012/clean-javascript-code.git"
   },
   "keywords": [
     "javascript",
     "snippets",
     "list"
   ],
-  "author": "Chalarangelo (chalarangelo@gmail.com)",
+  "author": "Fuchao2012 (zhengfuchao2008@126.com)",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/30-seconds/30-seconds-of-code/issues"
+    "url": "https://github.com/fuchao2012/clean-javascript-code/issues"
   },
-  "homepage": "https://30secondsofcode.org/",
+  "homepage": "https://fuchao2012.github.io",
   "dependencies": {}
 }

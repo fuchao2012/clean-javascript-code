@@ -1,11 +1,7 @@
-/*
-  This is the tagger script that updates the tag_databse file and logs stats for snippet tags.
-  Run using `npm run tagger`.
-*/
-// Load modules
-const fs = require('fs-extra'),
-  chalk = require('chalk');
+const fs = require('fs-extra');
+const chalk = require('chalk');
 const util = require('./util');
+
 if (util.isTravisCI() && /^Travis build: \d+/g.test(process.env['TRAVIS_COMMIT_MESSAGE'])) {
   console.log(`${chalk.green('NOBUILD')} Tagging terminated, parent commit is a Travis build!`);
   process.exit(0);
@@ -13,11 +9,7 @@ if (util.isTravisCI() && /^Travis build: \d+/g.test(process.env['TRAVIS_COMMIT_M
 // Set variables for paths
 const snippetsPath = './snippets';
 // Set variables for script
-let snippets = {},
-  output = '',
-  tagDbData = {},
-  missingTags = 0,
-  tagDbStats = {};
+let snippets = {}, output = '', tagDbData = {}, missingTags = 0, tagDbStats = {};
 // Start the timer of the script
 console.time('Tagger');
 // Synchronously read all snippets and sort them as necessary (case-insensitive)
