@@ -1,5 +1,16 @@
-# 代码整洁的 JavaScript
-
+# Clean JavaScript
+<p align="center">
+    <img src="https://img.shields.io/badge/MUST-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/MUST NOT-12-red.svg"/>
+    <img src="https://img.shields.io/badge/REQUIRED-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/SHALL-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/SHALL NOT-12-red.svg"/>
+    <img src="https://img.shields.io/badge/SHOULD-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/SHOULD NOT-12-red.svg"/>
+    <img src="https://img.shields.io/badge/RECOMMENDED-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/MAY-12-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/OPTIONAL-12-yellow.svg"/>
+</p>
 ## 目录
 
   1. [简介](#简介)
@@ -935,7 +946,6 @@ console.log(`Employee name: ${employee.getName()}`); // Employee name: John Doe
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
 
-
 ## **类**
 
 ### ES2015/ES6类优先与ES5纯函数
@@ -1713,7 +1723,6 @@ async function getCleanCodeArticle() {
 }
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
-
 
 ## **错误处理**
 

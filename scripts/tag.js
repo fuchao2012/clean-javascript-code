@@ -7,7 +7,7 @@ if (util.isTravisCI() && /^Travis build: \d+/g.test(process.env['TRAVIS_COMMIT_M
   process.exit(0);
 }
 // Set variables for paths
-const snippetsPath = './snippets';
+const snippetsPath = './rules';
 // Set variables for script
 let snippets = {}, output = '', tagDbData = {}, missingTags = 0, tagDbStats = {};
 // Start the timer of the script
@@ -37,22 +37,23 @@ try {
     }
   }
   // Write to tag_database
-  fs.writeFileSync('tag_database', output);
+  fs.writeFileSync('rule_database', output);
 } catch (err) {
   // Handle errors (hopefully not!)
-  console.log(`${chalk.red('ERROR!')} During tag_database generation: ${err}`);
+  console.log(`${chalk.red('ERROR!')} During rule_database generation: ${err}`);
   process.exit(1);
 }
-// Log statistics for the tag_database file
+// Log statistics for the rule_database file
 console.log(`\n${chalk.bgWhite(chalk.black('=== TAG STATS ==='))}`);
 for (let tagData of Object.entries(tagDbStats)
   .filter(v => v[0] !== 'undefined')
-  .sort((a, b) => a[0].localeCompare(b[0])))
+  .sort((a, b) => a[0].localeCompare(b[0]))) {
   console.log(`${chalk.green(tagData[0])}: ${tagData[1]} snippets`);
+}
 console.log(
-  `${chalk.blue("New untagged snippets (will be tagged as 'uncategorized'):")} ${missingTags}\n`
+  `${chalk.blue('New untagged snippets (will be tagged as \'uncategorized\'):')} ${missingTags}\n`
 );
 // Log a success message
-console.log(`${chalk.green('SUCCESS!')} tag_database file updated!`);
+console.log(`${chalk.green('SUCCESS!')} rule_database file updated!`);
 // Log the time taken
 console.timeEnd('Tagger');

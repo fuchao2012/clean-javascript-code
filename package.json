@@ -12,7 +12,6 @@
     "markdown-it": "^8.4.2",
     "node-sass": "^4.9.3",
     "octicons": "^7.4.0",
-    "prettier": "^1.14.2",
     "prismjs": "^1.15.0",
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^4.0.3",
