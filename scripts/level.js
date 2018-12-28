@@ -29,12 +29,12 @@ try {
       console.log(`${chalk.yellow('Tagged uncategorized:')} ${snippet[0].slice(0, -3)}`);
     }
   }
-  fs.writeFileSync('rules_database', output);
+  fs.writeFileSync('rule_database', output);
 } catch (err) {
-  console.log(`${chalk.red('ERROR!')} During rules_database generation: ${err}`);
+  console.log(`${chalk.red('ERROR!')} During rule_database generation: ${err}`);
   process.exit(1);
 }
-// // Log statistics for the rules_database file
+// // Log statistics for the rule_database file
 // console.log(`\n${chalk.bgWhite(chalk.black('=== TAG STATS ==='))}`);
 // for (let tagData of Object.entries(tagDbStats)
 //   .filter(v => v[0] !== 'undefined')
@@ -45,6 +45,6 @@ try {
 //   `${chalk.blue('New untagged snippets (will be tagged as \'uncategorized\'):')} ${missingTags}\n`
 // );
 // // Log a success message
-// console.log(`${chalk.green('SUCCESS!')} rules_database file updated!`);
+// console.log(`${chalk.green('SUCCESS!')} rule_database file updated!`);
 // // Log the time taken
 // console.timeEnd('Tagger');

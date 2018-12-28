@@ -6,7 +6,7 @@ ES2015-ES6类优先与ES5纯函数:类,SHOULD
 不要写入全局函数:函数,SHOULD
 不要在代码库中保存注释掉的代码:评论,SHOULD
 不要忽略捕捉到的错误:错误处理,SHOULD
-不要忽略被拒绝的promise:错误处理,SHOULD
+不要忽略被拒绝的promise :错误处理,SHOULD
 不要有日志式的评论:评论,SHOULD
 不要过度优化:函数,SHOULD
 为相同类型的变量使用相同的词汇:变量,SHOULD
