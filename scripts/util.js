@@ -55,6 +55,28 @@ const readSnippets = snippetsPath => {
 // Creates an object from pairs
 const objectFromPairs = arr => arr.reduce((a, v) => ((a[v[0]] = v[1]), a), {});
 // Load tag data from the database
+const readRules = () => {
+  let tagDbData = {};
+  try {
+    tagDbData = objectFromPairs(
+      fs
+        .readFileSync('rule_database', 'utf8')
+        .split('\n')
+        .filter(v => v.trim() !== '')
+        .map(v => {
+          let data = v.split(':').slice(0, 2);
+          data[1] = data[1].split(',').map(t => t.trim());
+          return data;
+        })
+    );
+  } catch (err) {
+    // Handle errors (hopefully not!)
+    console.log(`${chalk.red('ERROR!')} During tag database loading: ${err}`);
+    process.exit(1);
+  }
+  return tagDbData;
+};
+// Load tag data from the database
 const readTags = () => {
   let tagDbData = {};
   try {
@@ -162,6 +184,7 @@ module.exports = {
   getMarkDownAnchor,
   getFilesInDir,
   readSnippets,
+  readRules,
   readTags,
   optimizeNodes,
   capitalize,

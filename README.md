@@ -236,7 +236,6 @@ function createMenu(config) {
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
 
-
 ### 函数应当只做一件事情
 
 这是软件工程中最重要的一条规则， 当函数需要做更多的事情时， 它们将会更难进行编写、 测试和推理。
@@ -482,7 +481,6 @@ function createMenu(config) {
 createMenu(menuConfig);
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
-
 
 ### 不要使用标记位做为函数参数
 
@@ -909,7 +907,6 @@ let balance = bankAccount.balance;
 
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
-
 
 ### 让对象拥有私有成员
 这个可以通过闭包来实现（针对 ES5 或更低）。
@@ -1836,7 +1833,6 @@ class Animal {}
 class Alpaca {}
 ```
 **[⬆ 返回顶部](#代码整洁的-javascript)**
-
 
 ### 函数的调用方与被调用方应该靠近
 

@@ -28,6 +28,7 @@
     "glossary:keymaker": "node ./scripts/glossary/keyword.js",
     "builder": "node ./scripts/build.js",
     "reverse": "node ./scripts/reverse.js",
+    "level": "node ./scripts/level.js",
     "linter": "node ./scripts/lint.js",
     "tagger": "node ./scripts/tag.js",
     "webber": "node ./scripts/web.js && serve .",
