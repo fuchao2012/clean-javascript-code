@@ -31,7 +31,7 @@ const unescapeHTML = str =>
         '&amp;': '&',
         '&lt;': '<',
         '&gt;': '>',
-        '&#39;': "'",
+        '&#39;': '\'',
         '&quot;': '"'
       }[tag] || tag)
   );
@@ -46,32 +46,32 @@ ${
       snippetKey[1].includes('advanced')
         ? 'advanced'
         : snippetKey[1].includes('beginner')
-          ? 'beginner'
-          : 'intermediate'
-    }"></div>`
+        ? 'beginner'
+        : 'intermediate'
+      }"></div>`
     : ''
-}
+  }
   ${md
-    .render(`\n${addCornerTag ? snippetList[snippetKey[0] + '.md'] : snippetList[snippetKey[0]]}`)
-    .replace(/<h3/g, `<div class="section card-content"><h4 id="${snippetKey[0].toLowerCase()}"`)
-    .replace(/<\/h3>/g, '</h4>')
-    .replace(
-      /<pre><code class="language-js">/m,
-      '</div><pre><code class="language-js">'
-    )
-    .replace(
-      /<pre><code class="language-js">([^\0]*?)<\/code><\/pre>/gm,
-      (match, p1) =>
-        `<pre class="language-js">${Prism.highlight(
-          unescapeHTML(p1),
-          Prism.languages.javascript
-        )}</pre>`
-    )
-    .replace(/<\/div>\s*<pre class="/g, '</div><pre class="section card-code ')
-    .replace(
-      /<\/pre>\s+<pre class="/g,
-      '</pre><pre class="section card-examples '
-    )}
+  .render(`\n${addCornerTag ? snippetList[snippetKey[0] + '.md'] : snippetList[snippetKey[0]]}`)
+  .replace(/<h3/g, `<div class="section card-content"><h4 id="${snippetKey[0].toLowerCase()}"`)
+  .replace(/<\/h3>/g, '</h4>')
+  .replace(
+    /<pre><code class="language-js">/m,
+    '</div><pre><code class="language-js">'
+  )
+  .replace(
+    /<pre><code class="language-js">([^\0]*?)<\/code><\/pre>/gm,
+    (match, p1) =>
+      `<pre class="language-js">${Prism.highlight(
+        unescapeHTML(p1),
+        Prism.languages.javascript
+      )}</pre>`
+  )
+  .replace(/<\/div>\s*<pre class="/g, '</div><pre class="section card-code ')
+  .replace(
+    /<\/pre>\s+<pre class="/g,
+    '</pre><pre class="section card-examples '
+  )}
   </div>`;
 const filterSnippets = (snippetList, excludedFiles) =>
   Object.keys(snippetList)
@@ -102,11 +102,15 @@ sass.render(
   function(err, result) {
     if (!err) {
       fs.writeFile(path.join('docs', 'style.css'), result.css, function(err2) {
-        if (!err2) console.log(`${chalk.green('SUCCESS!')} style.css file generated!`);
-        else console.log(`${chalk.red('ERROR!')} During style.css file generation: ${err}`);
+        if (!err2) {
+          console.log(`${chalk.green('SUCCESS!')} style.css file generated!`);
+        } else {
+          console.log(`${chalk.red('ERROR!')} During style.css file generation: ${err}`);
+        }
       });
-    } else
+    } else {
       console.log(`${chalk.red('ERROR!')} During style.css file generation: ${err}`);
+    }
 
   }
 );
@@ -170,7 +174,7 @@ try {
         .render(
           `[${taggedSnippet[0]}](./${
             tag === 'array' ? 'index' : tag
-          }#${taggedSnippet[0].toLowerCase()})\n`
+            }#${taggedSnippet[0].toLowerCase()})\n`
         )
         .replace(/<p>/g, '')
         .replace(/<\/p>/g, '</li>')
@@ -193,8 +197,9 @@ try {
     localOutput += md
       .render(`## ${util.capitalize(tag, true)}\n`)
       .replace(/<h2>/g, '<h2 class="category-name">');
-    for (let taggedSnippet of Object.entries(tagDbData).filter(v => v[1][0] === tag))
+    for (let taggedSnippet of Object.entries(tagDbData).filter(v => v[1][0] === tag)) {
       localOutput += generateSnippetCard(snippets, taggedSnippet, true);
+    }
     // Add the ending static part
     localOutput += `\n${endPart + '\n'}`;
     // Optimize punctuation nodes
@@ -252,7 +257,7 @@ const generateMenuForStaticPage = staticPart => {
         .render(
           `[${taggedSnippet[0]}](./${
             tag === 'array' ? 'index' : tag
-          }#${taggedSnippet[0].toLowerCase()})\n`
+            }#${taggedSnippet[0].toLowerCase()})\n`
         )
         .replace(/<p>/g, '')
         .replace(/<\/p>/g, '</li>')
@@ -266,11 +271,12 @@ const generateMenuForStaticPage = staticPart => {
 // Copy static files
 staticFiles.forEach(f => {
   try {
-    if(f !== 'array.html') {
+    if (f !== 'array.html') {
       let fileData = fs.readFileSync(path.join(staticPartsPath, f), 'utf8');
       fs.writeFileSync(path.join(docsPath, f), generateMenuForStaticPage(fileData));
-    } else
+    } else {
       fs.copyFileSync(path.join(staticPartsPath, f), path.join(docsPath, f));
+    }
     console.log(`${chalk.green('SUCCESS!')} ${f} file copied!`);
   } catch (err) {
     console.log(`${chalk.red('ERROR!')} During ${f} copying: ${err}`);

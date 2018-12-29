@@ -8,7 +8,7 @@ if (util.isTravisCI() && /^Travis build: \d+/g.test(process.env['TRAVIS_COMMIT_M
 }
 const rulePaths = './rules';
 
-console.time('Tagger');
+console.time('Update Tiger');
 let output = '';
 let missingTags = 0;
 let rules = util.readSnippets(rulePaths);
@@ -20,9 +20,7 @@ let tagDbStats = Object.entries(tagDbData).reduce((acc, val) => {
 try {
   for (let snippet of Object.entries(rules)) {
     if (tagDbData.hasOwnProperty(snippet[0].slice(0, -3)) && tagDbData[snippet[0].slice(0, -3)].join(',').trim()) {
-      output += `${snippet[0].slice(0, -3)}:${tagDbData[snippet[0].slice(0, -3)]
-        .join(',')
-        .trim()}\n`;
+      output += `${snippet[0].slice(0, -3)}:${tagDbData[snippet[0].slice(0, -3)].join(',').trim()}\n`;
     } else {
       output += `${snippet[0].slice(0, -3)}:uncategorized\n`;
       missingTags++;
@@ -34,17 +32,16 @@ try {
   console.log(`${chalk.red('ERROR!')} During rule_database generation: ${err}`);
   process.exit(1);
 }
-// // Log statistics for the rule_database file
-// console.log(`\n${chalk.bgWhite(chalk.black('=== TAG STATS ==='))}`);
-// for (let tagData of Object.entries(tagDbStats)
-//   .filter(v => v[0] !== 'undefined')
-//   .sort((a, b) => a[0].localeCompare(b[0]))) {
-//   console.log(`${chalk.green(tagData[0])}: ${tagData[1]} snippets`);
-// }
-// console.log(
-//   `${chalk.blue('New untagged snippets (will be tagged as \'uncategorized\'):')} ${missingTags}\n`
-// );
-// // Log a success message
-// console.log(`${chalk.green('SUCCESS!')} rule_database file updated!`);
-// // Log the time taken
-// console.timeEnd('Tagger');
+// Log statistics for the rule_database file
+console.log(`\n${chalk.bgWhite(chalk.black('=== TAG STATS ==='))}`);
+for (let tagData of Object.entries(tagDbStats)
+  .filter(v => v[0] !== 'undefined')
+  .sort((a, b) => a[0].localeCompare(b[0]))) {
+  console.log(`${chalk.green(tagData[0])}: ${tagData[1]} rules`);
+}
+if(missingTags>0){
+  console.log(`${chalk.blue('New untagged snippets (will be tagged as \'uncategorized\'):')} ${missingTags}\n`);
+}
+
+console.log(`${chalk.green('SUCCESS!')} rule_database file updated!`);
+console.timeEnd('Update Tiger');
